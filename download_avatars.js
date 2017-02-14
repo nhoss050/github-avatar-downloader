@@ -11,10 +11,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
   var GITHUB_TOKEN = "061e2c2d30fd19d4aaa022458d0abc5f4f985fa8";
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
 
-
-  //console.log(typeof repoName);
-
-//
     if(OwnerOfRepo){
       if(nameOfRepo){
         request.get({
@@ -34,22 +30,16 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 getRepoContributors(OwnerOfRepo, nameOfRepo, function(result, err) {
-  //console.log("Errors: ", err);
-  // console.log("Result: \n", result);
 
-  // var contributor_urls = result.map(contributor => contributor.url);
-  // console.log(contributor_urls);
   for (var contributors of result) {
     console.log(contributors.avatar_url);
     downloadImageByURL(contributors.avatar_url,contributors.id )
-    // todo: figure out filepath
-    // todo: pass URL and filepath
+
   }
 });
 
 function downloadImageByURL(url, filePath) {
   // ...
-
 
   request.get(url)
   .on('error', function(err){
