@@ -1,18 +1,20 @@
 var request = require ('request');
 var fs = require('fs')
 console.log('Welcome to the GitHub Avatar Downloader!');
+// getting user input
 var userinput = process.argv.slice(2);
-  var OwnerOfRepo = userinput[0]
-  var nameOfRepo = userinput[1]
+var OwnerOfRepo = userinput[0]
+ var nameOfRepo = userinput[1]
 
 function getRepoContributors(repoOwner, repoName, cb) {
 
   var GITHUB_USER = "nhoss050";
   var GITHUB_TOKEN = "061e2c2d30fd19d4aaa022458d0abc5f4f985fa8";
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-
+// conditionals to make sure user inputs are given
     if(OwnerOfRepo){
       if(nameOfRepo){
+// request is being sent and the response will be parsed into json
         request.get({
         url:requestURL, headers:{'User-Agent':'rohit'},
         }, function(err, response, body) {
@@ -26,18 +28,18 @@ function getRepoContributors(repoOwner, repoName, cb) {
     } else {
       console.log('Owner of the Repo is required!')
     }
-
 }
-
+// function that outputs the users avatar URL
 getRepoContributors(OwnerOfRepo, nameOfRepo, function(result, err) {
 
   for (var contributors of result) {
     console.log(contributors.avatar_url);
+// callback image fetch function
     downloadImageByURL(contributors.avatar_url,contributors.id )
 
   }
 });
-
+// function that get the images of each user
 function downloadImageByURL(url, filePath) {
   // ...
 
