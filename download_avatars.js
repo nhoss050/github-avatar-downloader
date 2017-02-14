@@ -1,5 +1,5 @@
 var request = require ('request');
-
+var fs = require('fs')
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -10,11 +10,11 @@ function getRepoContributors(repoOwner, repoName, cb) {
 // console.log(requestURL);
 
   request.get({
-      url:requestURL, headers:{'User-Agent':'rohit'},
-    }, function(err, response, body) {
-        if (err) cb(null, err); // throw err;
-        cb(JSON.parse(response.body));
-    });
+    url:requestURL, headers:{'User-Agent':'rohit'},
+  }, function(err, response, body) {
+    if (err) cb(null, err); // throw err;
+    cb(JSON.parse(response.body));
+  });
 
   // ...
   // request.get(requestURL, function(err, response, body) {
@@ -30,6 +30,28 @@ getRepoContributors("jquery", "jquery", function(result, err) {
 
   // var contributor_urls = result.map(contributor => contributor.url);
   // console.log(contributor_urls);
-  for (var contributors of result)
+  for (var contributors of result) {
     console.log(contributors.avatar_url);
+    downloadImageByURL(contributors.avatar_url,contributors.id )
+    // todo: figure out filepath
+    // todo: pass URL and filepath
+  }
 });
+
+function downloadImageByURL(url, filePath) {
+  // ...
+
+
+  request.get(url)
+  .on('error', function(err){
+    throw err;
+  })
+  .on('response',function (response){
+  console.log('Response Status Code: ', response.statusCode,'Response content type is: ',response.headers['content-type']);
+  })
+  .pipe(fs.createWriteStream("./pics/"+filePath));
+
+
+}
+
+
