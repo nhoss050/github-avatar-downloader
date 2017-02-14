@@ -35,13 +35,13 @@ getRepoContributors(OwnerOfRepo, nameOfRepo, function(result, err) {
   for (var contributors of result) {
     console.log(contributors.avatar_url);
 // callback image fetch function
-    downloadImageByURL(contributors.avatar_url,contributors.id )
+    downloadImageByURL(contributors.avatar_url,contributors.login )
 
   }
 });
 // function that get the images of each user
 function downloadImageByURL(url, filePath) {
-  // ...
+// user needs to create a flder called pics/ to save the images
 
   request.get(url)
   .on('error', function(err){
@@ -50,7 +50,7 @@ function downloadImageByURL(url, filePath) {
   .on('response',function (response){
   console.log('Response Status Code: ', response.statusCode,'Response content type is: ',response.headers['content-type']);
   })
-  .pipe(fs.createWriteStream("./pics/"+filePath));
+  .pipe(fs.createWriteStream("./avatars/"+filePath));
 
 
 }
